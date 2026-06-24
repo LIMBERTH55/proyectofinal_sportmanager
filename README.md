@@ -4,14 +4,13 @@
 
 ### Proyecto Final - INF560 Desarrollo Web Backend
 
-**Universidad Autónoma Tomás Frías (UATF)** 
-**Carrera Ingenieria Informatica**
+**Universidad Autónoma Tomás Frías (UATF)**
 
 **Estudiante:** Limberth Cordova Mamani
 
 **Docente:** M. Sc. Huáscar Fedor Gonzales Guzmán
 
-**Versión:** v0.1
+**Versión Actual:** v0.2
 
 ---
 
@@ -19,9 +18,9 @@
 
 SportManager es una aplicación web desarrollada con Laravel para la gestión de torneos deportivos.
 
-El sistema permitirá administrar torneos, partidos, participantes y comentarios mediante una interfaz web. El proyecto sigue una arquitectura monolítica utilizando Laravel, PostgreSQL y Blade.
+El sistema permite administrar torneos, partidos, participantes y comentarios mediante una interfaz web segura, utilizando autenticación basada en sesión, control de acceso y operaciones CRUD.
 
-La versión v0.1 corresponde a la fase de cimientos del proyecto e incluye el modelo de datos, relaciones, migraciones, factories y seeders.
+La versión actual corresponde a la Fase 2 del proyecto.
 
 ---
 
@@ -30,47 +29,34 @@ La versión v0.1 corresponde a la fase de cimientos del proyecto e incluye el mo
 * Laravel 13
 * PHP 8.3+
 * PostgreSQL
-* Eloquent ORM
 * Blade
+* Laravel Breeze
+* Eloquent ORM
 * Git
 
 ---
 
-# MODELO DE DATOS
+# FUNCIONALIDADES IMPLEMENTADAS
 
-## Entidades principales
+## FASE 1 - CIMIENTOS (v0.1)
 
-### User
+### Modelo de Datos
 
-Representa los usuarios del sistema.
+#### User
 
-Campos principales:
-
-* id
 * name
 * email
 * password
 
----
+#### Torneo
 
-### Torneo
-
-Campos:
-
-* id
 * nombre
 * descripcion
 * estado
 * owner_id
-* deleted_at
 
----
+#### Partido
 
-### Partido
-
-Campos:
-
-* id
 * torneo_id
 * responsable_id
 * titulo
@@ -78,214 +64,316 @@ Campos:
 * estado
 * prioridad
 * fecha_partido
-* deleted_at
 
----
+#### Comentario
 
-### Comentario
-
-Campos:
-
-* id
 * contenido
 * user_id
 * partido_id
 
----
+#### Etiqueta (Opcional)
 
-### Etiqueta (Opcional)
-
-Campos:
-
-* id
 * nombre
 * color
 
 ---
 
-# RELACIONES IMPLEMENTADAS
+### Relaciones Implementadas
 
-## Relación 1:N
+#### 1:N
 
-### Torneo → Partido
+* Torneo → Partidos
+* Usuario → Comentarios
+* Partido → Comentarios
 
-Un torneo puede tener muchos partidos.
+#### N:M
 
-### Usuario → Comentario
-
-Un usuario puede realizar muchos comentarios.
-
-### Partido → Comentario
-
-Un partido puede tener muchos comentarios.
-
----
-
-## Relación N:M
-
-### Usuario ↔ Torneo
+* Usuario ↔ Torneo
 
 Tabla pivote:
 
+```text
 torneo_user
+```
 
 Campos:
 
-* user_id
-* torneo_id
-* torneo_role
-
-Ejemplos de roles en torneo:
-
-* organizador
-* entrenador
-* arbitro
-* invitado
+```text
+user_id
+torneo_id
+torneo_role
+```
 
 ---
 
-# SOFT DELETES
+### Soft Deletes
 
-Se implementó Soft Delete en:
+Implementados en:
 
 * Torneo
 * Partido
 
-Esto permite recuperar registros eliminados sin perder información.
-
 ---
 
-# FACTORIES
-
-Factories implementados:
+### Factories
 
 * UserFactory
 * TorneoFactory
 * PartidoFactory
 
-Permiten generar datos de prueba automáticamente.
+---
+
+### Seeders
+
+* SportManagerSeeder
 
 ---
 
-# SEEDERS
+## FASE 2 - AUTENTICACIÓN (v0.2)
 
-Seeder principal:
+### Laravel Breeze
 
-SportManagerSeeder
+Se implementó Laravel Breeze con Blade para proporcionar autenticación basada en sesión.
 
-Funciones:
+Funcionalidades:
 
-* Crear usuario administrador
-* Crear torneos de prueba
-* Crear partidos asociados
+* Registro de usuarios
+* Inicio de sesión
+* Cierre de sesión
+* Recuperación de sesión
+* Middleware auth
+* Protección CSRF
+
+---
+
+### Dashboard Privado
+
+Acceso restringido únicamente a usuarios autenticados.
+
+Ruta:
+
+```text
+/dashboard
+```
+
+---
+
+### Navbar Personalizada
+
+Se personalizó la navegación principal para SportManager.
+
+Incluye:
+
+* Nombre del sistema
+* Usuario autenticado
+* Logout
+
+---
+
+### Protección de Rutas
+
+Uso de:
+
+```php
+Route::middleware(['auth'])
+```
+
+para restringir acceso a usuarios autenticados.
+
+---
+
+### Protección CSRF
+
+Todos los formularios generados por Breeze incluyen:
+
+```blade
+@csrf
+```
+
+Cumpliendo los requisitos de seguridad del proyecto.
 
 ---
 
 # INSTALACIÓN
 
-Clonar repositorio:
+## Clonar repositorio
 
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/LIMBERTH55/proyectofinal_sportmanager.git
 ```
 
 Ingresar al proyecto:
 
 ```bash
-cd sportmanager
+cd proyectofinal_sportmanager
 ```
 
-Instalar dependencias:
+---
+
+## Instalar dependencias PHP
 
 ```bash
 composer install
 ```
 
-Copiar variables de entorno:
+---
+
+## Instalar dependencias Frontend
+
+```bash
+npm install
+```
+
+---
+
+## Configurar variables de entorno
 
 ```bash
 cp .env.example .env
 ```
 
-Generar clave:
-
-```bash
-php artisan key:generate
-```
-
-Configurar PostgreSQL en el archivo .env:
+Editar:
 
 ```env
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
-DB_DATABASE=sportmanager
+DB_DATABASE=proyecto_db
 DB_USERNAME=postgres
-DB_PASSWORD=xxxxx
+DB_PASSWORD=123456
 ```
 
-Ejecutar migraciones y seeders:
+---
+
+## Generar clave de aplicación
+
+```bash
+php artisan key:generate
+```
+
+---
+
+## Ejecutar migraciones y seeders
 
 ```bash
 php artisan migrate:fresh --seed
 ```
 
-Levantar servidor:
+---
+
+## Compilar assets
+
+Modo desarrollo:
+
+```bash
+npm run dev
+```
+
+Modo producción:
+
+```bash
+npm run build
+```
+
+---
+
+## Iniciar servidor
 
 ```bash
 php artisan serve
+```
+
+Abrir:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+# USUARIO DE PRUEBA
+
+Administrador:
+
+```text
+Correo:
+admin@sportmanager.com
+
+Contraseña:
+12345678
 ```
 
 ---
 
 # ESTRUCTURA DEL PROYECTO
 
+```text
 app/
 ├── Models
 │   ├── Torneo.php
 │   ├── Partido.php
 │   ├── Comentario.php
 │   └── Etiqueta.php
-│
+
 database/
 ├── migrations
 ├── factories
-└── seeders
+├── seeders
+
+resources/
+├── views
+
+routes/
+├── web.php
+```
 
 ---
 
 # CONTROL DE VERSIONES
 
-Versión actual:
-
-```text
-v0.1
-```
-
-Contenido:
-
-* Migraciones
-* Modelos
-* Relaciones Eloquent
-* Factories
-* Seeders
-* Soft Deletes
-* Tabla pivote N:M
-
-# ESTADO DEL PROYECTO
-
-## FASE 1 COMPLETADA (v0.1)
+## v0.1
 
 Incluye:
 
-* Modelo relacional
 * Migraciones
-* Relaciones Eloquent
+* Modelos
+* Relaciones
 * Factories
 * Seeders
 * Soft Deletes
-* Relación N:M con campo adicional en pivote
 
-Próxima fase:
+---
 
-v0.2 - Autenticación con Laravel Breeze y protección de rutas.
+## v0.2
+
+Incluye:
+
+* Laravel Breeze
+* Login
+* Registro
+* Logout
+* Dashboard privado
+* Middleware auth
+* Protección CSRF
+* Navbar personalizada
+---
+# ESTADO DEL PROYECTO
+
+## COMPLETADO
+
+* Fase 1 (v0.1)
+* Fase 2 (v0.2)
+
+## SIGUIENTE FASE
+
+### Fase 3 (v0.3)
+
+Implementación de:
+
+* Spatie Laravel Permission
+* Roles
+* Permisos
+* Policies
+* Control de acceso con @can
+* Control de acceso con @role
+* Autorización por pertenencia
