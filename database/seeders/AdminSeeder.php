@@ -10,7 +10,7 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(
+        $admin = User::firstOrCreate(
             [
                 'email' => 'admin@sportmanager.com'
             ],
@@ -19,5 +19,7 @@ class AdminSeeder extends Seeder
                 'password' => Hash::make('12345678')
             ]
         );
+
+        $admin->assignRole('Administrador');
     }
 }

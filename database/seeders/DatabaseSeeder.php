@@ -7,9 +7,23 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
-{
+{   
+    
     public function run(): void
     {
+
+
+          $this->call([
+
+            RolePermissionSeeder::class,
+
+            AdminSeeder::class,
+
+            UserRoleSeeder::class,
+
+            SportManagerSeeder::class,
+
+        ]);
         $this->call([
             AdminSeeder::class,
             SportManagerSeeder::class,
