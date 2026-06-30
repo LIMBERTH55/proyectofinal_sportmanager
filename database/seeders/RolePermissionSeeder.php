@@ -21,27 +21,20 @@ class RolePermissionSeeder extends Seeder
         */
 
         $permisos = [
-
             'ver torneo',
             'crear torneo',
             'editar torneo',
             'eliminar torneo',
-
             'gestionar miembros',
-
+            'ver partido',
             'crear partido',
             'editar partido',
             'eliminar partido',
-
-            'asignar partido',
-
             'comentar',
-
-            'gestionar usuarios',
+            'gestionar usuarios'
         ];
 
         foreach ($permisos as $permiso) {
-
             Permission::firstOrCreate([
                 'name' => $permiso,
                 'guard_name' => 'web'
@@ -80,31 +73,34 @@ class RolePermissionSeeder extends Seeder
         |--------------------------------------------------------------------------
         */
 
-        // Administrador
+        // Administrador: Obtiene todos los permisos automáticamente
         $admin->givePermissionTo(Permission::all());
 
-        // Organizador
+        // Organizador: Todos excepto gestionar usuarios
         $organizador->givePermissionTo([
             'ver torneo',
             'crear torneo',
             'editar torneo',
+            'eliminar torneo',
             'gestionar miembros',
+            'ver partido',
             'crear partido',
             'editar partido',
-            'asignar partido',
+            'eliminar partido',
             'comentar'
         ]);
 
-        // Entrenador
+        // Entrenador: Ver e interactuar básico
         $entrenador->givePermissionTo([
             'ver torneo',
-            'editar partido',
+            'ver partido',
             'comentar'
         ]);
 
-        // Invitado
+        // Invitado: Solo ver e interactuar básico
         $invitado->givePermissionTo([
             'ver torneo',
+            'ver partido',
             'comentar'
         ]);
     }

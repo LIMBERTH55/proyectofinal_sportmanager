@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('partidos', function (Blueprint $table) {
@@ -16,37 +15,39 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
+            $table->string('equipo_local');
+
+            $table->string('equipo_visitante');
+
+            $table->date('fecha');
+
+            $table->time('hora');
+
+            $table->string('lugar');
+
+            $table->enum('estado', [
+                'programado',
+                'en_juego',
+                'finalizado',
+                'suspendido'
+            ])->default('programado');
+
             $table->foreignId('responsable_id')
                 ->nullable()
                 ->constrained('users')
                 ->nullOnDelete();
 
-            $table->string('titulo');
+            $table->integer('marcador_local')
+                ->default(0);
 
-            $table->text('descripcion')->nullable();
-
-            $table->enum('estado',[
-                'pendiente',
-                'en_progreso',
-                'completado'
-            ])->default('pendiente');
-
-            $table->enum('prioridad',[
-                'baja',
-                'media',
-                'alta'
-            ])->default('media');
-
-            $table->date('fecha_partido')->nullable();
+            $table->integer('marcador_visitante')
+                ->default(0);
 
             $table->softDeletes();
 
             $table->timestamps();
+
         });
     }
-
-    public function down(): void
-    {
-        Schema::dropIfExists('partidos');
-    }
+     
 };

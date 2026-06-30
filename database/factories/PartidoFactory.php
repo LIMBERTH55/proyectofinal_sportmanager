@@ -2,28 +2,58 @@
 
 namespace Database\Factories;
 
-use App\Models\Partido;
+use App\Models\Torneo;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Partido>
- */
 class PartidoFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            'titulo' => fake()->sentence(),
-            'descripcion' => fake()->paragraph(),
-            'estado' => 'pendiente',
-            'prioridad' => 'media',
-            'fecha_partido' => now()->addDays(rand(1,30))
+
+            'torneo_id' => Torneo::factory(),
+
+            'equipo_local' => fake()->randomElement([
+                'Real Madrid',
+                'Barcelona',
+                'Liverpool',
+                'Manchester City',
+                'PSG',
+                'Bayern Munich',
+                'Milan',
+                'Juventus'
+            ]),
+
+            'equipo_visitante' => fake()->randomElement([
+                'Chelsea',
+                'Arsenal',
+                'Inter',
+                'Borussia Dortmund',
+                'Napoli',
+                'Sevilla',
+                'Benfica',
+                'Porto'
+            ]),
+
+            'fecha' => fake()->date(),
+
+            'hora' => fake()->time('H:i:s'),
+
+            'lugar' => fake()->city(),
+
+            'estado' => fake()->randomElement([
+                'programado',
+                'en_juego',
+                'finalizado'
+            ]),
+
+            'responsable_id' => User::inRandomOrder()->value('id'),
+
+            'marcador_local' => fake()->numberBetween(0, 5),
+
+            'marcador_visitante' => fake()->numberBetween(0, 5),
+
         ];
     }
 }
-

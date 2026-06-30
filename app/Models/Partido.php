@@ -3,28 +3,56 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Partido extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+
         'torneo_id',
-        'responsable_id',
-        'titulo',
-        'descripcion',
+
+        'equipo_local',
+
+        'equipo_visitante',
+
+        'fecha',
+
+        'hora',
+
+        'lugar',
+
         'estado',
-        'prioridad',
-        'fecha_partido'
+
+        'responsable_id',
+
+        'marcador_local',
+
+        'marcador_visitante'
+
     ];
 
+    protected $casts = [
+
+        'fecha' => 'date',
+
+        'hora' => 'datetime:H:i'
+
+    ];
+
+    /**
+     * Torneo
+     */
     public function torneo()
     {
         return $this->belongsTo(Torneo::class);
     }
 
+    /**
+     * Responsable
+     */
     public function responsable()
     {
         return $this->belongsTo(
@@ -33,13 +61,12 @@ class Partido extends Model
         );
     }
 
+    /**
+     * Comentarios
+     */
     public function comentarios()
     {
         return $this->hasMany(Comentario::class);
     }
 
-    public function etiquetas()
-    {
-        return $this->belongsToMany(Etiqueta::class);
-    }
 }

@@ -56,4 +56,28 @@ class TorneoPolicy
                 && $torneo->owner_id === $user->id
             );
     }
+
+    /**
+     * Restaurar torneo
+     */
+    public function restore(User $user, Torneo $torneo): bool
+    {
+        return $user->hasRole('Administrador')
+            || (
+                $user->can('editar torneo')
+                && $torneo->owner_id === $user->id
+            );
+    }
+
+    /**
+     * Eliminar permanentemente torneo
+     */
+    public function forceDelete(User $user, Torneo $torneo): bool
+    {
+        return $user->hasRole('Administrador')
+            || (
+                $user->can('eliminar torneo')
+                && $torneo->owner_id === $user->id
+            );
+    }
 }
