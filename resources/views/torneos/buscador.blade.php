@@ -1,15 +1,15 @@
-<form method="GET" class="flex flex-wrap gap-3 mb-6">
+<form method="GET" class="mb-6 grid gap-3 sm:grid-cols-[1fr_180px_auto]">
 
     <input
         type="text"
         name="buscar"
         value="{{ request('buscar') }}"
         placeholder="Buscar torneo..."
-        class="border rounded-lg p-2 w-72">
+        class="w-full rounded-lg border border-slate-300 p-2.5">
 
     <select
         name="estado"
-        class="border rounded-lg p-2">
+        class="w-full rounded-lg border border-slate-300 p-2.5">
 
         <option value="">Todos</option>
 
@@ -37,7 +37,7 @@
     </select>
 
     <button
-        class="bg-blue-600 hover:bg-blue-700 text-white px-5 rounded">
+        class="rounded-lg bg-blue-600 px-5 py-2.5 font-bold text-white transition hover:bg-blue-700">
 
         Buscar
 

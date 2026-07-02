@@ -2,7 +2,7 @@
 
     <x-slot name="header">
 
-        <div class="flex justify-between">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
             <h2 class="text-2xl font-bold">
 
@@ -12,7 +12,7 @@
 
             @can('crear torneo')
 
-                <a href="{{ route('torneos.create') }}" class="bg-blue-600 text-white px-5 py-2 rounded-lg">
+                <a href="{{ route('torneos.create') }}" class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2 font-bold text-white transition hover:bg-blue-700">
 
                     Nuevo Torneo
 
@@ -28,17 +28,9 @@
 
         <div class="max-w-7xl mx-auto">
 
-            @if(session('success'))
+            <x-flash-message />
 
-                <div class="bg-green-100 border border-green-300 text-green-700 p-4 rounded mb-5">
-
-                    {{ session('success') }}
-
-                </div>
-
-            @endif
-
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="rounded-lg bg-white p-4 shadow-sm ring-1 ring-slate-200 sm:p-6">
 
                 @include('torneos.buscador')
 

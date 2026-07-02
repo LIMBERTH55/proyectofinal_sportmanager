@@ -8,21 +8,57 @@ use App\Models\User;
 use App\Http\Requests\StorePartidoRequest;
 use App\Http\Requests\UpdatePartidoRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PartidoController extends Controller
 {
     /**
      * Listar partidos del torneo
      */
-    public function index(Torneo $torneo)
+    public function index(Request $request, Torneo $torneo)
     {
         $this->authorize('view', $torneo);
 
-        $partidos = $torneo->partidos()
-            ->with('responsable')
+        $query = $torneo->partidos()->with('responsable');
+
+        // Buscar por equipos
+        if ($request->filled('buscar')) {
+
+            $buscar = Str::lower($request->buscar);
+
+            $query->where(function ($q) use ($buscar) {
+
+                $q->whereRaw('LOWER(equipo_local) LIKE ?', ["%{$buscar}%"])
+
+                    ->orWhereRaw('LOWER(equipo_visitante) LIKE ?', ["%{$buscar}%"]);
+
+            });
+
+        }
+
+        // Filtrar por estado
+        if ($request->filled('estado')) {
+
+            $query->where('estado', $request->estado);
+
+        }
+
+        // Filtrar por fecha
+        if ($request->filled('fecha')) {
+
+            $query->whereDate('fecha', $request->fecha);
+
+        }
+
+        $partidos = $query
+
             ->orderBy('fecha')
+
             ->orderBy('hora')
-            ->paginate(10);
+
+            ->paginate(10)
+
+            ->withQueryString();
 
         return view('partidos.index', compact(
             'torneo',

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Torneo;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,7 +26,7 @@ class TorneoFactory extends Factory
                 'activo',
                 'finalizado'
             ]),
-            'owner_id' => 1
+            'owner_id' => User::factory()
         ];
     }
 }

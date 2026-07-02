@@ -6,9 +6,25 @@ use App\Http\Controllers\MiembroController;
 use App\Http\Controllers\PartidoController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 });
 
 Route::middleware('auth')->group(function () {
@@ -30,13 +46,11 @@ Route::middleware('auth')->group(function () {
 
         });
 
-    // Dashboard General
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
-
     /*
     |--------------------------------------------------------------------------
     | Rutas de Torneos
     |--------------------------------------------------------------------------
+    |
     */
     Route::resource('torneos', TorneoController::class);
 
@@ -54,16 +68,20 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     | Recurso Anidado para Partidos de un Torneo
     |--------------------------------------------------------------------------
+    |
     */
-    Route::resource(
-        'torneos.partidos',
-        PartidoController::class
-    );
+    Route::scopeBindings()->group(function () {
+        Route::resource(
+            'torneos.partidos',
+            PartidoController::class
+        );
+    });
 
     /*
     |--------------------------------------------------------------------------
     | Rutas para la gestión de Miembros del Torneo
     |--------------------------------------------------------------------------
+    |
     */
     Route::post(
         'torneos/{torneo}/miembros',
@@ -84,6 +102,7 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     | Rutas para la gestión de Comentarios de Partidos
     |--------------------------------------------------------------------------
+    |
     */
     Route::post(
         'partidos/{partido}/comentarios',
@@ -104,6 +123,7 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     | Rutas de Administración (Roles y Permisos Spatie)
     |--------------------------------------------------------------------------
+    |
     */
     Route::middleware('role:Administrador')->group(function () {
         Route::get('/admin', function () {

@@ -12,7 +12,7 @@ class SportManagerSeeder extends Seeder
     public function run(): void
     {
         $admin = User::firstOrCreate(
-            ['email' => 'admin@sport.com'],
+            ['email' => 'admin@sportmanager.com'],
             [
                 'name' => 'Administrador',
                 'password' => bcrypt('12345678')

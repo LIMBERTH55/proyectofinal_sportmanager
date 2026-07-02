@@ -23,9 +23,14 @@ class TorneoController extends Controller
         // Filtrar
         $query->estado($request->estado);
 
-        // Si no es administrador solo ve los suyos
+        // Si no es administrador solo ve torneos propios o donde es miembro.
         if (!auth()->user()->hasRole('Administrador')) {
-            $query->where('owner_id', auth()->id());
+            $query->where(function ($q) {
+                $q->where('owner_id', auth()->id())
+                    ->orWhereHas('miembros', function ($miembros) {
+                        $miembros->where('users.id', auth()->id());
+                    });
+            });
         }
 
         $torneos = $query
@@ -86,7 +91,7 @@ class TorneoController extends Controller
 
         $torneo->load([
             'propietario',
-            'partidos',
+            'partidos.responsable',
             'miembros'
         ]);
 

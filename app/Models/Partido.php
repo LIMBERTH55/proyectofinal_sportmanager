@@ -36,9 +36,7 @@ class Partido extends Model
 
     protected $casts = [
 
-        'fecha' => 'date',
-
-        'hora' => 'datetime:H:i'
+        'fecha' => 'date'
 
     ];
 

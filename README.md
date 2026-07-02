@@ -1,208 +1,321 @@
-# SPORTMANAGER
+# 🏆 SportManager
 
-## Sistema Web de Gestión de Torneos Deportivos
-
-### Proyecto Final - INF560 Desarrollo Web Backend
-
-**Universidad Autónoma Tomás Frías (UATF)**
-
-**Estudiante:** Limberth Cordova Mamani
-
-**Docente:** M. Sc. Huáscar Fedor Gonzales Guzmán
-
-**Versión Actual:** v0.2
+Sistema Web de Gestión de Torneos Deportivos desarrollado con Laravel 13 como Proyecto Final de la materia **INF560 - Desarrollo Web Backend** de la Universidad Autónoma Tomás Frías (UATF).
 
 ---
 
-# DESCRIPCIÓN DEL PROYECTO
+# 📌 Información General
 
-SportManager es una aplicación web desarrollada con Laravel para la gestión de torneos deportivos.
+**Materia:** INF560 – Desarrollo Web Backend
 
-El sistema permite administrar torneos, partidos, participantes y comentarios mediante una interfaz web segura, utilizando autenticación basada en sesión, control de acceso y operaciones CRUD.
+**Proyecto Final:** Sistema Web de Gestión de Torneos Deportivos
 
-La versión actual corresponde a la Fase 2 del proyecto.
+**Framework:** Laravel 13
 
----
+**Lenguaje:** PHP 8.3+
 
-# TECNOLOGÍAS UTILIZADAS
+**Base de Datos:** PostgreSQL
 
-* Laravel 13
-* PHP 8.3+
-* PostgreSQL
-* Blade
-* Laravel Breeze
-* Eloquent ORM
-* Git
+**Arquitectura:** Monolítica (Laravel + Blade)
+
+**Autor:** Limberth
+
+**Universidad:** Universidad Autónoma Tomás Frías (UATF)
 
 ---
 
-# FUNCIONALIDADES IMPLEMENTADAS
+# 📖 Descripción
 
-## FASE 1 - CIMIENTOS (v0.1)
+SportManager es una aplicación web que permite administrar torneos deportivos de manera colaborativa.
 
-### Modelo de Datos
+El sistema permite:
 
-#### User
+- Crear torneos
+- Gestionar partidos
+- Administrar miembros del torneo
+- Registrar comentarios
+- Controlar accesos mediante Roles y Permisos
+- Gestionar usuarios desde un panel administrativo
 
-* name
-* email
-* password
-
-#### Torneo
-
-* nombre
-* descripcion
-* estado
-* owner_id
-
-#### Partido
-
-* torneo_id
-* responsable_id
-* titulo
-* descripcion
-* estado
-* prioridad
-* fecha_partido
-
-#### Comentario
-
-* contenido
-* user_id
-* partido_id
-
-#### Etiqueta (Opcional)
-
-* nombre
-* color
+Todo el sistema fue desarrollado utilizando Laravel 13 siguiendo la arquitectura MVC y buenas prácticas de desarrollo.
 
 ---
 
-### Relaciones Implementadas
+# 🚀 Tecnologías utilizadas
 
-#### 1:N
+- Laravel 13
+- PHP 8.3+
+- PostgreSQL
+- Blade
+- Laravel Breeze
+- Tailwind CSS
+- Spatie Laravel Permission
+- Eloquent ORM
+- Git
 
-* Torneo → Partidos
-* Usuario → Comentarios
-* Partido → Comentarios
+---
 
-#### N:M
+# 📂 Estructura del Proyecto
 
-* Usuario ↔ Torneo
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   ├── Requests/
+│   └── Middleware/
+│
+├── Models/
+│
+├── Policies/
+│
+database/
+├── migrations/
+├── factories/
+└── seeders/
+
+resources/
+├── views/
+│   ├── admin/
+│   ├── comentarios/
+│   ├── partidos/
+│   ├── torneos/
+│   └── layouts/
+
+routes/
+└── web.php
+```
+
+---
+
+# 🗄 Modelo de Datos
+
+El sistema está compuesto por las siguientes entidades:
+
+- Usuarios
+- Torneos
+- Partidos
+- Comentarios
+- Etiquetas (Opcional)
+
+Relaciones implementadas:
+
+## 1:N
+
+- Usuario → Torneos
+- Torneo → Partidos
+- Partido → Comentarios
+- Usuario → Comentarios
+
+## N:M
+
+- Usuarios ↔ Torneos
 
 Tabla pivote:
 
-```text
+```
 torneo_user
 ```
 
 Campos:
 
-```text
-user_id
-torneo_id
-torneo_role
+- torneo_id
+- user_id
+- torneo_role
+
+---
+
+# 👥 Roles del Sistema
+
+## Administrador
+
+Puede:
+
+- Gestionar usuarios
+- Asignar roles
+- Crear torneos
+- Editar cualquier torneo
+- Eliminar cualquier torneo
+- Gestionar miembros
+- Gestionar partidos
+- Comentar
+
+---
+
+## Organizador
+
+Puede:
+
+- Crear torneos
+- Editar sus torneos
+- Gestionar miembros
+- Crear partidos
+- Editar partidos
+- Comentar
+
+---
+
+## Entrenador
+
+Puede:
+
+- Ver torneos
+- Ver partidos
+- Comentar
+
+---
+
+## Invitado
+
+Puede:
+
+- Ver torneos
+- Ver partidos
+- Comentar
+
+---
+
+# 🔐 Roles y Permisos
+
+El sistema utiliza:
+
+```
+spatie/laravel-permission
 ```
 
----
+Permisos implementados:
 
-### Soft Deletes
+- ver torneo
+- crear torneo
+- editar torneo
+- eliminar torneo
 
-Implementados en:
+- gestionar miembros
 
-* Torneo
-* Partido
+- ver partido
+- crear partido
+- editar partido
+- eliminar partido
 
----
+- comentar
 
-### Factories
-
-* UserFactory
-* TorneoFactory
-* PartidoFactory
-
----
-
-### Seeders
-
-* SportManagerSeeder
+- gestionar usuarios
 
 ---
 
-## FASE 2 - AUTENTICACIÓN (v0.2)
+# 🔒 Policies
 
-### Laravel Breeze
+Se implementaron Policies para:
 
-Se implementó Laravel Breeze con Blade para proporcionar autenticación basada en sesión.
+- TorneoPolicy
+- PartidoPolicy
+- ComentarioPolicy
 
-Funcionalidades:
+Las Policies controlan:
 
-* Registro de usuarios
-* Inicio de sesión
-* Cierre de sesión
-* Recuperación de sesión
-* Middleware auth
-* Protección CSRF
+- Ver
+- Crear
+- Editar
+- Eliminar
 
----
-
-### Dashboard Privado
-
-Acceso restringido únicamente a usuarios autenticados.
-
-Ruta:
-
-```text
-/dashboard
-```
+según el propietario del recurso y el rol del usuario.
 
 ---
 
-### Navbar Personalizada
+# 📋 Funcionalidades
 
-Se personalizó la navegación principal para SportManager.
+## Autenticación
 
-Incluye:
+✔ Registro
 
-* Nombre del sistema
-* Usuario autenticado
-* Logout
+✔ Inicio de sesión
+
+✔ Cierre de sesión
+
+✔ Middleware Auth
+
+✔ Protección CSRF
 
 ---
 
-### Protección de Rutas
+## Dashboard
+
+- Total de Torneos
+- Total de Partidos
+- Total de Usuarios
+- Total de Comentarios
+- Últimos Torneos
+- Últimos Partidos
+
+---
+
+## Torneos
+
+- Crear
+- Editar
+- Eliminar
+- Buscar
+- Filtrar
+- Soft Delete
+
+---
+
+## Partidos
+
+- Crear
+- Editar
+- Eliminar
+- Buscar
+- Filtrar
+- Estado
+- Marcador
+- Responsable
+
+---
+
+## Comentarios
+
+- Crear
+- Eliminar
+
+---
+
+## Miembros
+
+- Agregar
+- Eliminar
+- Cambiar Rol
 
 Uso de:
 
-```php
-Route::middleware(['auth'])
-```
-
-para restringir acceso a usuarios autenticados.
+- attach()
+- detach()
+- updateExistingPivot()
 
 ---
 
-### Protección CSRF
+## Administración
 
-Todos los formularios generados por Breeze incluyen:
+Panel exclusivo para Administradores.
 
-```blade
-@csrf
-```
+Permite:
 
-Cumpliendo los requisitos de seguridad del proyecto.
+- Listar usuarios
+- Cambiar roles
+- Gestionar permisos
 
 ---
 
-# INSTALACIÓN
+# ⚙ Instalación
 
-## Clonar repositorio
+## 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/LIMBERTH55/proyectofinal_sportmanager.git
 ```
 
-Ingresar al proyecto:
+---
+
+## 2. Entrar al proyecto
 
 ```bash
 cd proyectofinal_sportmanager
@@ -210,7 +323,7 @@ cd proyectofinal_sportmanager
 
 ---
 
-## Instalar dependencias PHP
+## 3. Instalar dependencias
 
 ```bash
 composer install
@@ -218,7 +331,7 @@ composer install
 
 ---
 
-## Instalar dependencias Frontend
+## 4. Instalar dependencias de Node
 
 ```bash
 npm install
@@ -226,26 +339,35 @@ npm install
 
 ---
 
-## Configurar variables de entorno
+## 5. Copiar el archivo .env
 
 ```bash
 cp .env.example .env
 ```
 
-Editar:
+---
+
+## 6. Configurar PostgreSQL
+
+Editar el archivo `.env`
 
 ```env
 DB_CONNECTION=pgsql
+
 DB_HOST=127.0.0.1
+
 DB_PORT=5432
+
 DB_DATABASE=proyecto_db
+
 DB_USERNAME=postgres
-DB_PASSWORD=123456
+
+DB_PASSWORD=tu_password
 ```
 
 ---
 
-## Generar clave de aplicación
+## 7. Generar la clave
 
 ```bash
 php artisan key:generate
@@ -253,7 +375,7 @@ php artisan key:generate
 
 ---
 
-## Ejecutar migraciones y seeders
+## 8. Ejecutar migraciones
 
 ```bash
 php artisan migrate:fresh --seed
@@ -261,119 +383,215 @@ php artisan migrate:fresh --seed
 
 ---
 
-## Compilar assets
-
-Modo desarrollo:
+## 9. Compilar Vite
 
 ```bash
 npm run dev
 ```
 
-Modo producción:
-
-```bash
-npm run build
-```
-
 ---
 
-## Iniciar servidor
+## 10. Ejecutar el servidor
 
 ```bash
 php artisan serve
 ```
 
-Abrir:
-
-```text
-http://127.0.0.1:8000
-```
-
 ---
 
-# USUARIO DE PRUEBA
+# 👤 Credenciales de prueba
 
-Administrador:
+## Administrador
 
-```text
 Correo:
-admin@sportmanager.com
 
-Contraseña:
+```
+admin@sportmanager.com
+```
+
+Contraseña
+
+```
 12345678
 ```
 
 ---
 
-# ESTRUCTURA DEL PROYECTO
+## Organizador
 
-```text
-app/
-├── Models
-│   ├── Torneo.php
-│   ├── Partido.php
-│   ├── Comentario.php
-│   └── Etiqueta.php
+Correo:
 
-database/
-├── migrations
-├── factories
-├── seeders
+```
+organizador@sportmanager.com
+```
 
-resources/
-├── views
+Contraseña
 
-routes/
-├── web.php
+```
+12345678
 ```
 
 ---
 
-# CONTROL DE VERSIONES
+## Entrenador
 
-## v0.1
+Correo
 
-Incluye:
+```
+entrenador@sportmanager.com
+```
 
-* Migraciones
-* Modelos
-* Relaciones
-* Factories
-* Seeders
-* Soft Deletes
+Contraseña
+
+```
+12345678
+```
 
 ---
 
-## v0.2
+## Invitado
 
-Incluye:
+Correo
 
-* Laravel Breeze
-* Login
-* Registro
-* Logout
-* Dashboard privado
-* Middleware auth
-* Protección CSRF
-* Navbar personalizada
+```
+invitado@sportmanager.com
+```
+
+Contraseña
+
+```
+12345678
+```
+
 ---
-# ESTADO DEL PROYECTO
 
-## COMPLETADO
+# 📁 Seeders
 
-* Fase 1 (v0.1)
-* Fase 2 (v0.2)
+Se implementaron:
 
-## SIGUIENTE FASE
+- AdminSeeder
+- UserRoleSeeder
+- RolePermissionSeeder
+- SportManagerSeeder
 
-### Fase 3 (v0.3)
+---
 
-Implementación de:
+# 📁 Factories
 
-* Spatie Laravel Permission
-* Roles
-* Permisos
-* Policies
-* Control de acceso con @can
-* Control de acceso con @role
-* Autorización por pertenencia
+- UserFactory
+- TorneoFactory
+- PartidoFactory
+- ComentarioFactory
+
+---
+
+# 📁 Form Requests
+
+- StoreTorneoRequest
+- UpdateTorneoRequest
+- StorePartidoRequest
+- UpdatePartidoRequest
+- StoreComentarioRequest
+
+---
+
+# 📁 Controladores
+
+- DashboardController
+- TorneoController
+- PartidoController
+- ComentarioController
+- MiembroController
+- AdminUserController
+
+---
+
+# 📁 Policies
+
+- TorneoPolicy
+- PartidoPolicy
+- ComentarioPolicy
+
+---
+
+# 📁 Middleware
+
+- auth
+- role
+- permission
+
+---
+
+# 🛠 Características Implementadas
+
+- Soft Deletes
+- Eloquent ORM
+- Form Requests
+- Policies
+- Roles
+- Permisos
+- Dashboard
+- CRUD Completo
+- Relaciones 1:N
+- Relaciones N:M
+- Tabla Pivote
+- Paginación
+- Filtros
+- Mensajes Flash
+- Errores Personalizados (403, 404, 500)
+
+---
+
+# 📌 Control de Versiones
+
+Etiquetas utilizadas:
+
+```
+v0.1
+```
+
+Cimientos
+
+```
+v0.2
+```
+
+Autenticación
+
+```
+v0.3
+```
+
+Roles y Permisos
+
+```
+v0.4
+```
+
+CRUD Completo
+
+```
+v1.0
+```
+
+Proyecto Final
+
+---
+
+# 📄 Licencia
+
+Proyecto desarrollado exclusivamente con fines académicos para la asignatura **INF560 – Desarrollo Web Backend** de la **Universidad Autónoma Tomás Frías (UATF)**.
+
+---
+
+# 👨‍💻 Autor
+
+**Limberth**
+
+Ingeniería Informática
+
+Universidad Autónoma Tomás Frías
+
+Potosí - Bolivia
+
+2026

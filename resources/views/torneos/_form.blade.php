@@ -9,7 +9,7 @@
             type="text"
             name="nombre"
             value="{{ old('nombre', $torneo->nombre ?? '') }}"
-            class="w-full border rounded-lg p-3">
+            class="w-full rounded-lg border border-slate-300 p-3">
 
         @error('nombre')
             <p class="text-red-600 text-sm mt-1">
@@ -29,7 +29,7 @@
         <textarea
             rows="5"
             name="descripcion"
-            class="w-full border rounded-lg p-3">{{ old('descripcion', $torneo->descripcion ?? '') }}</textarea>
+            class="w-full rounded-lg border border-slate-300 p-3">{{ old('descripcion', $torneo->descripcion ?? '') }}</textarea>
 
         @error('descripcion')
             <p class="text-red-600 text-sm mt-1">
@@ -49,7 +49,7 @@
 
         <select
             name="estado"
-            class="w-full border rounded-lg p-3">
+            class="w-full rounded-lg border border-slate-300 p-3">
 
             <option value="planificado"
                 @selected(old('estado',$torneo->estado ?? '')=='planificado')>
@@ -76,10 +76,10 @@
 
     </div>
 
-    <div class="flex gap-3">
+    <div class="flex flex-col gap-3 sm:flex-row">
 
         <button
-            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+            class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-2.5 font-bold text-white transition hover:bg-blue-700">
 
             Guardar
 
@@ -87,7 +87,7 @@
 
         <a
             href="{{ route('torneos.index') }}"
-            class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg">
+            class="inline-flex items-center justify-center rounded-lg bg-slate-700 px-6 py-2.5 font-bold text-white transition hover:bg-slate-800">
 
             Cancelar
 

@@ -1,52 +1,186 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+    <div class="grid min-h-screen bg-slate-50 lg:grid-cols-2">
+        <aside class="relative hidden overflow-hidden bg-[#061640] text-white lg:flex">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_78%_16%,rgba(29,78,216,.36),transparent_25%),linear-gradient(135deg,#07163f_0%,#07358d_55%,#08215c_100%)]"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[46%] bg-[linear-gradient(to_top,rgba(5,46,22,.95),rgba(10,73,38,.66)_35%,rgba(10,35,85,.15)_75%,transparent)]"></div>
+            <div class="absolute bottom-0 left-0 right-0 h-44 border-t border-white/10 bg-[repeating-linear-gradient(105deg,rgba(255,255,255,.12)_0_1px,transparent_1px_48px)] opacity-40"></div>
+            <div class="absolute -left-9 top-24 h-20 w-20 rounded-full border-[7px] border-blue-500/80"></div>
+            <div class="absolute right-16 top-20 grid grid-cols-7 gap-3 opacity-55">
+                @for ($i = 0; $i < 42; $i++)
+                    <span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>
+                @endfor
+            </div>
+            <div class="absolute right-12 top-72 h-24 w-24 rounded-full border-[7px] border-blue-500/20"></div>
+            <div class="absolute right-10 bottom-14 grid grid-cols-7 gap-3 opacity-70">
+                @for ($i = 0; $i < 28; $i++)
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                @endfor
+            </div>
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+            <div class="relative z-10 mx-auto flex w-full max-w-2xl flex-col justify-center px-14 py-12">
+                <div class="text-center">
+                    <div class="mx-auto w-48">
+                        @include('auth.partials.sportmanager-logo')
+                    </div>
+                    <h1 class="mt-6 text-5xl font-black leading-none tracking-tight">
+                        SPORT<span class="text-emerald-400">MANAGER</span>
+                    </h1>
+                    <p class="mx-auto mt-4 max-w-sm text-2xl font-medium leading-snug text-white">
+                        Crea tu cuenta y empieza a organizar torneos deportivos
+                    </p>
+                    <div class="mx-auto mt-5 h-1 w-24 rounded-full bg-emerald-400"></div>
+                </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+                <div class="mx-auto mt-9 w-full max-w-lg space-y-4">
+                    @foreach([
+                        ['icon' => 'trophy', 'title' => 'Crea torneos', 'text' => 'Registra campeonatos y administra cada etapa.'],
+                        ['icon' => 'ball', 'title' => 'Programa partidos', 'text' => 'Organiza fechas, rivales, estados y resultados.'],
+                        ['icon' => 'shield', 'title' => 'Acceso seguro', 'text' => 'Trabaja con roles, permisos y datos protegidos.'],
+                        ['icon' => 'chart', 'title' => 'Control profesional', 'text' => 'Consulta estad&iacute;sticas y actividad desde el dashboard.'],
+                    ] as $item)
+                        <div class="flex items-center gap-4 rounded-lg border border-white/10 bg-white/5 p-3 backdrop-blur">
+                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-blue-600/55 shadow-lg shadow-blue-950/30">
+                                @include('auth.partials.login-icon', ['name' => $item['icon'], 'class' => 'h-6 w-6 text-white'])
+                            </div>
+                            <div>
+                                <p class="text-lg font-black leading-tight">{{ $item['title'] }}</p>
+                                <p class="text-sm font-medium text-blue-100">{!! $item['text'] !!}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+                <div class="mx-auto mt-8 grid w-full max-w-lg grid-cols-3 gap-4">
+                    @foreach([
+                        ['icon' => 'trophy', 'value' => \App\Models\Torneo::count(), 'label' => 'Torneos'],
+                        ['icon' => 'ball', 'value' => \App\Models\Partido::count(), 'label' => 'Partidos'],
+                        ['icon' => 'users', 'value' => \App\Models\User::count(), 'label' => 'Usuarios'],
+                    ] as $stat)
+                        <div class="rounded-lg bg-white/95 p-4 text-center text-slate-900 shadow-xl shadow-blue-950/20">
+                            <div class="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-blue-700 text-white">
+                                @include('auth.partials.login-icon', ['name' => $stat['icon'], 'class' => 'h-5 w-5'])
+                            </div>
+                            <p class="mt-3 text-3xl font-black leading-none">{{ $stat['value'] }}</p>
+                            <p class="mt-1 text-sm font-bold leading-none">{{ $stat['label'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+                <div class="mx-auto mt-8 w-full max-w-lg text-lg font-medium">
+                    <p>Proyecto Final &bull; INF560</p>
+                    <p>Universidad Aut&oacute;noma Tom&aacute;s Fr&iacute;as</p>
+                </div>
+            </div>
+        </aside>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <section class="flex min-h-screen items-center justify-center bg-[linear-gradient(135deg,#f8fbff_0%,#eef4fb_100%)] px-4 py-8 sm:px-6 lg:px-12">
+            <div class="w-full max-w-xl overflow-hidden rounded-2xl bg-white shadow-2xl shadow-slate-300/60 ring-1 ring-slate-200/80">
+                <div class="px-6 pb-8 pt-8 sm:px-12 sm:pt-10">
+                    <div class="text-center">
+                        <div class="mx-auto w-36">
+                            @include('auth.partials.sportmanager-logo')
+                        </div>
+                        <h2 class="mt-4 text-4xl font-black tracking-tight text-slate-900">
+                            Crea tu <span class="text-blue-700">cuenta</span>
+                        </h2>
+                        <p class="mt-3 text-lg font-medium text-slate-500">
+                            Reg&iacute;strate para acceder a SportManager
+                        </p>
+                    </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                    <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-5">
+                        @csrf
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+                        <div>
+                            <label for="name" class="block text-base font-bold text-slate-900">Nombre completo</label>
+                            <div class="mt-2 flex h-14 items-center gap-4 rounded-lg border border-slate-300 bg-white px-4 shadow-sm transition focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-100">
+                                @include('auth.partials.login-icon', ['name' => 'users', 'class' => 'h-6 w-6 shrink-0 text-blue-700'])
+                                <input id="name" name="name" type="text" value="{{ old('name') }}" required autofocus autocomplete="name"
+                                    placeholder="Tu nombre"
+                                    class="h-full min-w-0 flex-1 border-0 bg-transparent p-0 text-base font-medium text-slate-900 placeholder:text-slate-400 focus:ring-0">
+                            </div>
+                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        </div>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+                        <div>
+                            <label for="email" class="block text-base font-bold text-slate-900">Correo Electr&oacute;nico</label>
+                            <div class="mt-2 flex h-14 items-center gap-4 rounded-lg border border-slate-300 bg-white px-4 shadow-sm transition focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-100">
+                                @include('auth.partials.login-icon', ['name' => 'mail', 'class' => 'h-6 w-6 shrink-0 text-blue-700'])
+                                <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="username"
+                                    placeholder="ejemplo@correo.com"
+                                    class="h-full min-w-0 flex-1 border-0 bg-transparent p-0 text-base font-medium text-slate-900 placeholder:text-slate-400 focus:ring-0">
+                            </div>
+                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                        </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+                        <div>
+                            <label for="password" class="block text-base font-bold text-slate-900">Contrase&ntilde;a</label>
+                            <div class="mt-2 flex h-14 items-center gap-4 rounded-lg border border-slate-300 bg-white px-4 shadow-sm transition focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-100">
+                                @include('auth.partials.login-icon', ['name' => 'lock', 'class' => 'h-6 w-6 shrink-0 text-blue-700'])
+                                <input id="password" name="password" type="password" required autocomplete="new-password"
+                                    placeholder="Crea una contrase&ntilde;a"
+                                    class="h-full min-w-0 flex-1 border-0 bg-transparent p-0 text-base font-medium text-slate-900 placeholder:text-slate-400 focus:ring-0">
+                                <button type="button" aria-label="Mostrar u ocultar contrase&ntilde;a"
+                                    class="rounded-md p-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+                                    onclick="const input = document.getElementById('password'); input.type = input.type === 'password' ? 'text' : 'password';">
+                                    @include('auth.partials.login-icon', ['name' => 'eye-off', 'class' => 'h-5 w-5'])
+                                </button>
+                            </div>
+                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        </div>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
+                        <div>
+                            <label for="password_confirmation" class="block text-base font-bold text-slate-900">Confirmar contrase&ntilde;a</label>
+                            <div class="mt-2 flex h-14 items-center gap-4 rounded-lg border border-slate-300 bg-white px-4 shadow-sm transition focus-within:border-blue-600 focus-within:ring-4 focus-within:ring-blue-100">
+                                @include('auth.partials.login-icon', ['name' => 'shield', 'class' => 'h-6 w-6 shrink-0 text-blue-700'])
+                                <input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password"
+                                    placeholder="Repite tu contrase&ntilde;a"
+                                    class="h-full min-w-0 flex-1 border-0 bg-transparent p-0 text-base font-medium text-slate-900 placeholder:text-slate-400 focus:ring-0">
+                                <button type="button" aria-label="Mostrar u ocultar confirmaci&oacute;n de contrase&ntilde;a"
+                                    class="rounded-md p-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+                                    onclick="const input = document.getElementById('password_confirmation'); input.type = input.type === 'password' ? 'text' : 'password';">
+                                    @include('auth.partials.login-icon', ['name' => 'eye-off', 'class' => 'h-5 w-5'])
+                                </button>
+                            </div>
+                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                        </div>
+
+                        <button type="submit"
+                            class="flex h-14 w-full items-center justify-center gap-3 rounded-lg bg-blue-700 px-5 text-xl font-black text-white shadow-lg shadow-blue-700/25 transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-200">
+                            @include('auth.partials.login-icon', ['name' => 'login', 'class' => 'h-6 w-6'])
+                            Registrarse
+                        </button>
+
+                        <div class="border-t border-slate-200 pt-6 text-center">
+                            <p class="text-base font-medium text-slate-500">&iquest;Ya tienes una cuenta?</p>
+                            <a href="{{ route('login') }}"
+                                class="mt-3 inline-flex items-center gap-2 text-lg font-black text-emerald-600 transition hover:text-emerald-700">
+                                Iniciar sesi&oacute;n
+                                @include('auth.partials.login-icon', ['name' => 'chevron-right', 'class' => 'h-5 w-5'])
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 border-t border-slate-200 bg-slate-50 px-6 py-5 text-sm font-bold text-slate-600 sm:grid-cols-4 sm:px-10">
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="text-red-500">@include('auth.partials.login-icon', ['name' => 'laravel', 'class' => 'h-5 w-5'])</span>
+                        Laravel 13
+                    </div>
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="rounded-full bg-indigo-500 px-2 py-0.5 text-xs font-black italic text-white">php</span>
+                        PHP 8.3+
+                    </div>
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="text-sky-700">@include('auth.partials.login-icon', ['name' => 'database', 'class' => 'h-5 w-5'])</span>
+                        PostgreSQL
+                    </div>
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="text-cyan-500">@include('auth.partials.login-icon', ['name' => 'waves', 'class' => 'h-5 w-5'])</span>
+                        Tailwind CSS
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </x-guest-layout>
