@@ -19,9 +19,9 @@ class TorneoFactory extends Factory
     public function definition(): array
     {
         return [
-            'nombre' => fake()->sentence(3),
-            'descripcion' => fake()->paragraph(),
-            'estado' => fake()->randomElement([
+            'nombre' => $this->faker->sentence(3),
+            'descripcion' => $this->faker->paragraph(),
+            'estado' => $this->faker->randomElement([
                 'planificado',
                 'activo',
                 'finalizado'
