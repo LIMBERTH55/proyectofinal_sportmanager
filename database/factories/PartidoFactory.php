@@ -19,7 +19,7 @@ class PartidoFactory extends Factory
                 'Barcelona',
                 'Liverpool',
                 'Manchester City',
-                'PSG',
+                        'equipo_local' => $this->faker->randomElement([
                 'Bayern Munich',
                 'Milan',
                 'Juventus'
@@ -29,7 +29,7 @@ class PartidoFactory extends Factory
                 'Chelsea',
                 'Arsenal',
                 'Inter',
-                'Borussia Dortmund',
+                        'equipo_visitante' => $this->faker->randomElement([
                 'Napoli',
                 'Sevilla',
                 'Benfica',
@@ -39,17 +39,17 @@ class PartidoFactory extends Factory
             'fecha' => fake()->date(),
 
             'hora' => fake()->time('H:i:s'),
-
-            'lugar' => fake()->city(),
-
-            'estado' => fake()->randomElement([
+                        'fecha' => $this->faker->date(),
+                        'hora' => $this->faker->time('H:i:s'),
+                        'lugar' => $this->faker->city(),
+                        'estado' => $this->faker->randomElement([
                 'programado',
                 'en_juego',
                 'finalizado'
             ]),
 
-            'responsable_id' => User::inRandomOrder()->value('id'),
-
+                        'marcador_local' => $this->faker->numberBetween(0, 5),
+                        'marcador_visitante' => $this->faker->numberBetween(0, 5),
             'marcador_local' => fake()->numberBetween(0, 5),
 
             'marcador_visitante' => fake()->numberBetween(0, 5),

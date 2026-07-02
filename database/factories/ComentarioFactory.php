@@ -18,7 +18,7 @@ class ComentarioFactory extends Factory
     public function definition(): array
     {
         return [
-            'contenido' => fake()->paragraph(),
+            'contenido' => $this->faker->paragraph(),
             'user_id' => \App\Models\User::factory(),
             'partido_id' => \App\Models\Partido::factory(),
         ];
