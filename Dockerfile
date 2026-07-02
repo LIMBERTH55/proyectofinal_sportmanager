@@ -2,9 +2,11 @@ FROM node:20-bullseye-slim AS node-builder
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
+RUN echo "Installing frontend dependencies..."
 RUN npm install
 COPY . .
-RUN npm run build
+RUN echo "Building frontend assets with Vite..."
+RUN npm run build && ls -la public/build
 
 FROM php:8.5-cli
 WORKDIR /app
